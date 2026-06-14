@@ -14,8 +14,6 @@ A `NearEarthObject` maintains a collection of its close approaches, and a
 The functions that construct these objects use information extracted from the
 data files from NASA, so these objects should be able to handle all of the
 quirks of the data set, such as missing names and unknown diameters.
-
-You'll edit this file in Task 1.
 """
 from helpers import cd_to_datetime, datetime_to_str
 
@@ -24,25 +22,31 @@ class NearEarthObject:
     """A near-Earth object (NEO).
 
     An NEO encapsulates semantic and physical parameters about the object, such
-    as its primary designation (required, unique), IAU name (optional), diameter
-    in kilometers (optional - sometimes unknown), and whether it's marked as
-    potentially hazardous to Earth.
+    as its primary designation (required, unique), IAU name (optional),
+    diameter in kilometers (optional - sometimes unknown), and whether it's
+    marked as potentially hazardous to Earth.
 
     A `NearEarthObject` also maintains a collection of its close approaches -
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
-    def __init__(self, pdes, name=None, diameter=float('nan'), hazardous=False):
+    def __init__(self, pdes, name=None, diameter=float('nan'),
+                 hazardous=False):
         """Create a new `NearEarthObject`.
 
         :param pdes: The primary designation of the NEO.
         :param name: The IAU name of the NEO.
         :param diameter: The diameter of the NEO in kilometers.
-        :param hazardous: A flag indicating if the NEO is potentially hazardous.
+        :param hazardous: A flag indicating if the NEO is potentially
+        hazardous.
         """
         self.designation = str(pdes)
         self.name = str(name) if name else None
-        self.diameter = float('nan') if diameter != diameter else float(diameter)  # Check for NaN
+        self.diameter = (
+            float('nan')
+            if diameter != diameter
+            else float(diameter)  # Check for NaN
+        )
         self.hazardous = bool(hazardous)
 
         # Create an empty initial collection of linked approaches.
@@ -51,26 +55,34 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        return f"{self.designation} ({self.name})" if self.name else self.designation
+        return (
+            f"{self.designation} ({self.name})"
+            if self.name
+            else self.designation
+        )
 
     def __str__(self):
         """Return `str(self)`."""
-        return f"NEO {self.fullname} has a diameter of {self.diameter:.3f} km and is " \
-               f"{'potentially hazardous' if self.hazardous else 'not potentially hazardous'}."
+        return f"NEO {self.fullname} has a diameter of {self.diameter:.3f} " \
+               f"km and is " \
+               f"{'potentially hazardous'
+                  if self.hazardous else 'not potentially hazardous'}."
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
-               f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        """Return `repr(self)`, a computer-readable string representation
+        of this object."""
+        return f"NearEarthObject(designation={self.designation!r}, " \
+               f"name={self.name!r}, diameter={self.diameter:.3f}, " \
+               f"hazardous={self.hazardous!r})"
 
 
 class CloseApproach:
     """A close approach to Earth by an NEO.
 
-    A `CloseApproach` encapsulates information about the NEO's close approach to
-    Earth, such as the date and time (in UTC) of closest approach, the nominal
-    approach distance in astronomical units, and the relative approach velocity
-    in kilometers per second.
+    A `CloseApproach` encapsulates information about the NEO's close approach
+    to Earth, such as the date and time (in UTC) of closest approach, the
+    nominal approach distance in astronomical units, and the relative approach
+    velocity in kilometers per second.
 
     A `CloseApproach` also maintains a reference to its `NearEarthObject` -
     initially, this information (the NEO's primary designation) is saved in a
@@ -86,7 +98,7 @@ class CloseApproach:
         :param v_rel: The relative approach velocity in kilometers per second.
         """
         self._designation = str(des)
-        self.time = cd_to_datetime(cd)  # TODO: Use the cd_to_datetime function for this attribute.
+        self.time = cd_to_datetime(cd)
         self.distance = float(dist)
         self.velocity = float(v_rel)
 
@@ -95,12 +107,13 @@ class CloseApproach:
 
     @property
     def time_str(self):
-        """Return a formatted representation of this `CloseApproach`'s approach time.
+        """Return a formatted representation of this `CloseApproach`'s
+        approach time.
 
         The value in `self.time` should be a Python `datetime` object. While a
-        `datetime` object has a string representation, the default representation
-        includes seconds - significant figures that don't exist in our input
-        data set.
+        `datetime` object has a string representation, the default
+        representation includes seconds - significant figures that don't
+        exist in our input data set.
 
         The `datetime_to_str` method converts a `datetime` object to a
         formatted string that can be used in human-readable representations and
@@ -110,10 +123,13 @@ class CloseApproach:
 
     def __str__(self):
         """Return `str(self)`."""
-        return f"At {self.time_str}, '{self.neo.fullname}' approaches Earth at a distance " \
-               f"of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s."
+        return f"At {self.time_str}, '{self.neo.fullname}' approaches Earth " \
+               f"at a distance of {self.distance:.2f} au and a velocity " \
+               f"of {self.velocity:.2f} km/s."
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
+        """Return `repr(self)`, a computer-readable string representation
+        of this object."""
+        return f"CloseApproach(time={self.time_str!r}, " \
+               f"distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
