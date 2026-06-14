@@ -52,9 +52,10 @@ def load_approaches(cad_json_path):
         data = [dict(zip(fields, item)) for item in reader['data']]
         for item in data:
             approach = CloseApproach(
+                des=item['des'],
                 cd=item['cd'],
                 dist=item['dist'],
-                v_rel=item['v_rel']
+                v_rel=item['v_rel'],
             )
             approaches.append(approach)
     return approaches
