@@ -41,8 +41,7 @@ def write_to_csv(results, filename):
                 'designation': neo.designation,
                 'name': neo.name if neo.name else '',
                 'diameter_km': f"{neo.diameter:.3f}"
-                if neo.diameter == neo.diameter
-                else '',
+                if neo.diameter else float('nan'),
                 'potentially_hazardous': str(neo.hazardous)
             })
 
@@ -69,8 +68,7 @@ def write_to_json(results, filename):
                     'designation': approach.neo.designation,
                     'name': approach.neo.name if approach.neo.name else '',
                     'diameter_km': approach.neo.diameter
-                    if approach.neo.diameter == approach.neo.diameter
-                    else None,
+                    if approach.neo.diameter else float('nan'),
                     'potentially_hazardous': approach.neo.hazardous
                 }
             }
