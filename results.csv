@@ -1,0 +1,6 @@
+datetime_utc,distance_au,velocity_km_s,designation,name,diameter_km,potentially_hazardous
+2020-01-01 00:54,0.02,5.62,2020 AY1,,nan,False
+2020-01-01 02:06,0.04,7.36,2019 YK,,nan,False
+2020-01-01 03:31,0.16,2.79,2013 EC20,,nan,False
+2020-01-01 07:18,0.16,4.15,2020 AM1,,nan,False
+2020-01-01 08:44,0.28,17.55,2016 EF195,,nan,False
