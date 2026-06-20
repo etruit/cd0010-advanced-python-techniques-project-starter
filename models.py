@@ -15,6 +15,8 @@ The functions that construct these objects use information extracted from the
 data files from NASA, so these objects should be able to handle all of the
 quirks of the data set, such as missing names and unknown diameters.
 """
+import math
+
 from helpers import cd_to_datetime, datetime_to_str
 
 
@@ -30,6 +32,7 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, pdes, name=None, diameter=float('nan'),
                  hazardous=False):
         """Create a new `NearEarthObject`.
@@ -42,11 +45,11 @@ class NearEarthObject:
         """
         self.designation = str(pdes)
         self.name = str(name) if name else None
-        self.diameter = (
-            float('nan')
-            if diameter != diameter
-            else float(diameter)  # Check for NaN
-        )
+        try:
+            diameter = float(diameter)
+        except (TypeError, ValueError):
+            diameter = float('nan')
+        self.diameter = float('nan') if math.isnan(diameter) else diameter
         self.hazardous = bool(hazardous)
 
         # Create an empty initial collection of linked approaches.
@@ -69,8 +72,7 @@ class NearEarthObject:
                   if self.hazardous else 'not potentially hazardous'}."
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation
-        of this object."""
+        """Return a machine-readable representation of this object."""
         return f"NearEarthObject(designation={self.designation!r}, " \
                f"name={self.name!r}, diameter={self.diameter:.3f}, " \
                f"hazardous={self.hazardous!r})"
@@ -89,10 +91,12 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, des, cd, dist, v_rel):
         """Create a new `CloseApproach`.
 
-        :param des: The primary designation of the NEO making the close approach.
+        :param des: The primary designation of the NEO making the close
+        approach.
         :param cd: The close approach date and time (in UTC).
         :param dist: The nominal approach distance in astronomical units.
         :param v_rel: The relative approach velocity in kilometers per second.
@@ -107,8 +111,7 @@ class CloseApproach:
 
     @property
     def time_str(self):
-        """Return a formatted representation of this `CloseApproach`'s
-        approach time.
+        """Return a formatted representation of this close approach's time.
 
         The value in `self.time` should be a Python `datetime` object. While a
         `datetime` object has a string representation, the default
@@ -128,8 +131,7 @@ class CloseApproach:
                f"of {self.velocity:.2f} km/s."
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation
-        of this object."""
+        """Return a machine-readable representation of this object."""
         return f"CloseApproach(time={self.time_str!r}, " \
                f"distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"

@@ -1,5 +1,4 @@
-"""Extract data on near-Earth objects and close approaches from
-CSV and JSON files.
+"""Extract data on near-Earth objects and close approaches.
 
 The `load_neos` function extracts NEO data from a CSV file, formatted as
 described in the project instructions, into a collection of `NearEarthObject`s.
@@ -24,7 +23,7 @@ def load_neos(neo_csv_path):
     near-Earth objects.
     :return: A collection of `NearEarthObject`s.
     """
-    NearEarthObjects = []
+    neos = []
     with open(neo_csv_path, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -34,8 +33,8 @@ def load_neos(neo_csv_path):
                 diameter=row['diameter'] if row['diameter'] else float('nan'),
                 hazardous=row['pha'] == 'Y'
             )
-            NearEarthObjects.append(neo)
-    return NearEarthObjects
+            neos.append(neo)
+    return neos
 
 
 def load_approaches(cad_json_path):
@@ -45,7 +44,7 @@ def load_approaches(cad_json_path):
     close approaches.
     :return: A collection of `CloseApproach`es.
     """
-    CloseApproaches = []
+    approaches = []
     with open(cad_json_path, 'r') as f:
         reader = json.load(f)
         fields = reader['fields']
@@ -57,5 +56,5 @@ def load_approaches(cad_json_path):
                 dist=item['dist'],
                 v_rel=item['v_rel'],
             )
-            CloseApproaches.append(approach)
-    return CloseApproaches
+            approaches.append(approach)
+    return approaches
